@@ -3,7 +3,7 @@ package com.appchitieu.spendwise.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Data
+@Data 
 @Entity
 @Table(name = "app_users")
 public class User {
@@ -18,5 +18,6 @@ public class User {
     private String password;
 
     private String fullName;
+    
     private String email;
 }

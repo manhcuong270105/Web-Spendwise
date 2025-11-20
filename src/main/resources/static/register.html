@@ -67,10 +67,12 @@
                     alert("Đăng ký thành công! Vui lòng đăng nhập.");
                     window.location.href = '/login.html';
                 } else {
-                    alert("Đăng ký thất bại. Tên đăng nhập có thể đã tồn tại.");
+                    const errorText = await response.text();
+                    alert("Lỗi từ Server: " + errorText);
                 }
             } catch (error) {
                 console.error(error);
+                alert("Lỗi kết nối tới server!");
             }
         });
     </script>

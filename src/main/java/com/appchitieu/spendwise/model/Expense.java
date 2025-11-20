@@ -1,17 +1,18 @@
 package com.appchitieu.spendwise.model;
 
-import jakarta.persistence.*; 
+import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data 
-@Entity 
-@Table(name = "expenses") 
+@Data
+@Entity
+@Table(name = "expenses")
 public class Expense {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) 
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @Column(nullable = false)
     private String description;
@@ -20,5 +21,8 @@ public class Expense {
     private BigDecimal amount;
 
     @Column(nullable = false)
-    private LocalDate date; 
+    private LocalDate date;
+
+    @Column(nullable = false) 
+    private String type; 
 }

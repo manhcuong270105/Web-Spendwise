@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Spendwise</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm py-3">
+        <div class="container">
+            <a class="navbar-brand fw-bold fs-3" href="#">Spendwise</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center">
+                    <li class="nav-item"><a class="nav-link active fw-semibold" href="#">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Budget</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">History</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Category</a></li>
+                </ul>
+                <div class="d-flex align-items-center ms-4">
+                    <i class="fa-solid fa-moon toggle-dark me-3" style="cursor: pointer; font-size: 1.2rem;"></i>
+
+                    <div id="user-btn"
+                        class="rounded-circle bg-secondary text-white d-flex justify-content-center align-items-center"
+                        style="width: 40px; height: 40px; cursor: pointer;" title="Đăng xuất">
+                        <i class="fa-solid fa-user"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h4 class="fw-bold">Dashboard</h4>
+                <p class="text-muted" id="welcome-message">Welcome Back!</p>
+            </div>
+            <div>
+                <button class="btn btn-light border" data-bs-toggle="modal" data-bs-target="#incomeModal">
+                    <i class="fa-solid fa-plus text-success"></i> Income
+                </button>
+                <button class="btn btn-secondary ms-2" data-bs-toggle="modal" data-bs-target="#expenseModal">
+                    <i class="fa-solid fa-minus"></i> Expense
+                </button>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card-custom stat-card border-start border-4 border-primary">
+                    <h6>Total Income</h6>
+                    <h3 id="total-income-display">$ 0.00</h3>
+                    <span class="small-text">This month</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-custom stat-card border-start border-4 border-danger">
+                    <h6>Total Expenses</h6>
+                    <h3 id="total-expense-display">$ 0.00</h3>
+                    <span class="small-text">This month</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card-custom stat-card border-start border-4 border-success">
+                    <h6>Balance</h6>
+                    <h3 id="balance-display">$ 0.00</h3>
+                    <span class="small-text">Available</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card-custom" style="height: 350px;">
+                    <h6 class="mb-4">Transaction Overview</h6>
+                    <div class="d-flex justify-content-center h-100">
+                        <canvas id="pieChart"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card-custom" style="height: 350px; overflow-y: auto;">
+                    <h6 class="mb-4">Recent Breakdown</h6>
+                    <div id="breakdown-list">
+                        <p class="text-center text-muted mt-5">Chưa có dữ liệu phân tích</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card-custom">
+                    <h6 class="mb-3">Recent Transactions</h6>
+                    <div id="transaction-list">
+                        <p class="text-center text-muted">Chưa có giao dịch nào.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="incomeModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-success">Thêm Thu Nhập</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="incomeForm">
+                        <div class="mb-3">
+                            <label>Mô tả nguồn thu</label>
+                            <input type="text" class="form-control" id="incDesc" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Số tiền ($)</label>
+                            <input type="number" class="form-control" id="incAmount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Ngày</label>
+                            <input type="date" class="form-control" id="incDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">Lưu Thu Nhập</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="expenseModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-danger">Thêm Chi Tiêu</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="expenseForm">
+                        <div class="mb-3">
+                            <label>Mô tả chi tiêu</label>
+                            <input type="text" class="form-control" id="expDesc" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Số tiền ($)</label>
+                            <input type="number" class="form-control" id="expAmount" required>
+                        </div>
+                        <div class="mb-3">
+                            <label>Ngày</label>
+                            <input type="date" class="form-control" id="expDate" required>
+                        </div>
+                        <button type="submit" class="btn btn-secondary w-100">Lưu Chi Tiêu</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        // 1. HIỂN THỊ TÊN USER
+        const userStr = localStorage.getItem('user');
+        if (!userStr) {
+            window.location.href = '/login.html';
+        } else {
+            const user = JSON.parse(userStr);
+            document.getElementById('welcome-message').innerText = `Welcome Back, ${user.fullName || user.username}!`;
+        }
+
+        // Đăng xuất
+        document.getElementById('user-btn').addEventListener('click', () => {
+            if (confirm("Đăng xuất?")) {
+                localStorage.removeItem('user');
+                window.location.href = '/login.html';
+            }
+        });
+
+        // 2. TẢI DỮ LIỆU
+        async function fetchData() {
+            try {
+                const res = await fetch('/api/expenses');
+                const data = await res.json();
+                renderDashboard(data);
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function renderDashboard(data) {
+            // Tính toán
+            let totalIncome = 0;
+            let totalExpense = 0;
+
+            const listContainer = document.getElementById('transaction-list');
+            listContainer.innerHTML = '';
+
+            if (data.length === 0) {
+                listContainer.innerHTML = '<p class="text-center text-muted">Chưa có giao dịch nào.</p>';
+                updateStats(0, 0);
+                return;
+            }
+
+            data.forEach(item => {
+                if (item.type === 'INCOME') totalIncome += item.amount;
+                else totalExpense += item.amount;
+
+                // Màu sắc icon dựa trên loại
+                const iconColor = item.type === 'INCOME' ? 'text-success' : 'text-danger';
+                const iconClass = item.type === 'INCOME' ? 'fa-arrow-down' : 'fa-arrow-up';
+                const sign = item.type === 'INCOME' ? '+' : '-';
+
+                const html = `
+                <div class="transaction-item">
+                    <div class="d-flex align-items-center">
+                        <div class="icon-box ${iconColor} bg-light">
+                            <i class="fa-solid ${iconClass}"></i>
+                        </div>
+                        <div>
+                            <div class="fw-bold">${item.description}</div>
+                            <div class="text-muted small">${item.date}</div>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <span class="${iconColor} fw-bold me-4">${sign}$${item.amount}</span>
+                        <i class="fa-solid fa-trash action-btn" onclick="deleteItem(${item.id})"></i>
+                    </div>
+                </div>`;
+                listContainer.innerHTML += html;
+            });
+
+            updateStats(totalIncome, totalExpense);
+            updateChart(totalIncome, totalExpense);
+        }
+
+        function updateStats(income, expense) {
+            document.getElementById('total-income-display').innerText = '$ ' + income.toLocaleString();
+            document.getElementById('total-expense-display').innerText = '$ ' + expense.toLocaleString();
+            document.getElementById('balance-display').innerText = '$ ' + (income - expense).toLocaleString();
+        }
+
+        // 3. XỬ LÝ THÊM MỚI
+        async function addTransaction(desc, amount, date, type) {
+            const payload = { description: desc, amount: parseFloat(amount), date: date, type: type };
+            await fetch('/api/expenses', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            fetchData(); // Tải lại dữ liệu
+        }
+
+        // Form Thu Nhập
+        document.getElementById('incomeForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const desc = document.getElementById('incDesc').value;
+            const amount = document.getElementById('incAmount').value;
+            const date = document.getElementById('incDate').value;
+            addTransaction(desc, amount, date, 'INCOME');
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('incomeModal'));
+            modal.hide();
+            e.target.reset();
+        });
+
+        // Form Chi Tiêu
+        document.getElementById('expenseForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const desc = document.getElementById('expDesc').value;
+            const amount = document.getElementById('expAmount').value;
+            const date = document.getElementById('expDate').value;
+            addTransaction(desc, amount, date, 'EXPENSE');
+
+            const modal = bootstrap.Modal.getInstance(document.getElementById('expenseModal'));
+            modal.hide();
+            e.target.reset();
+        });
+
+        async function deleteItem(id) {
+            if (confirm("Xóa mục này?")) {
+                await fetch(`/api/expenses/${id}`, { method: 'DELETE' });
+                fetchData();
+            }
+        }
+
+        // 4. BIỂU ĐỒ
+        let myChart = null;
+        function updateChart(income, expense) {
+            const ctx = document.getElementById('pieChart').getContext('2d');
+            if (myChart) myChart.destroy();
+            if (income === 0 && expense === 0) return;
+            myChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Income', 'Expense'],
+                    datasets: [{
+                        data: [income, expense],
+                        backgroundColor: ['#198754', '#dc3545'],
+                        borderWidth: 0
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        fetchData();
+    </script>
+</body>
+
+</html>

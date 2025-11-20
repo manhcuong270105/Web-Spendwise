@@ -121,23 +121,38 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
+
         const userStr = localStorage.getItem('user');
 
         if (!userStr) {
+
             window.location.href = '/login.html';
         } else {
-            const user = JSON.parse(userStr);
-            const welcomeMsg = document.getElementById('welcome-message');
-            const displayName = user.fullName || user.username;
-            welcomeMsg.innerText = `Welcome Back, ${displayName}!`;
+
+            try {
+                const user = JSON.parse(userStr);
+                const welcomeMsg = document.getElementById('welcome-message');
+
+                \
+                const displayName = user.fullName || user.username;
+
+                if (welcomeMsg) {
+                    welcomeMsg.innerText = `Welcome Back, ${displayName}!`;
+                }
+            } catch (e) {
+                console.error("Lỗi đọc dữ liệu user:", e);
+            }
         }
 
-        document.getElementById('user-btn').addEventListener('click', function () {
-            if (confirm("Bạn có muốn đăng xuất?")) {
-                localStorage.removeItem('user');
-                window.location.href = '/login.html';
+        const logoutBtn = document.getElementById('user-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', function () {
+                if (confirm("Bạn có muốn đăng xuất?")) {
+                    localStorage.removeItem('user');
+                    window.location.href = '/login.html';
+                }
             });
-
+        }
 
         async function fetchExpenses() {
             try {
@@ -146,7 +161,8 @@
                 renderTransactions(expenses);
                 updateTotal(expenses);
             } catch (error) {
-                console.error("Lỗi:", error);
+                console.error("Lỗi tải dữ liệu:", error);
+                document.getElementById('transaction-list').innerHTML = '<p class="text-center text-danger">Lỗi kết nối server</p>';
             }
         }
 
@@ -154,7 +170,7 @@
             const container = document.getElementById('transaction-list');
             container.innerHTML = '';
 
-            if (data.length === 0) {
+            if (!data || data.length === 0) {
                 container.innerHTML = '<p class="text-center">Chưa có giao dịch nào.</p>';
                 return;
             }
@@ -173,8 +189,7 @@
                     </div>
                     <div class="d-flex align-items-center">
                         <span class="text-danger fw-bold me-4">$${item.amount}</span>
-                        <i class="fa-solid fa-pen action-btn"></i>
-                        <i class="fa-solid fa-trash action-btn" onclick="deleteExpense(${item.id})"></i>
+                        <i class="fa-solid fa-trash action-btn" onclick="deleteExpense(${item.id})" title="Xóa"></i>
                     </div>
                 </div>
                 `;
@@ -183,29 +198,33 @@
         }
 
         function updateTotal(data) {
+            if (!data) return;
             const total = data.reduce((sum, item) => sum + item.amount, 0);
-            document.getElementById('total-expense-display').innerText = '$ ' + total.toLocaleString();
+            const totalEl = document.getElementById('total-expense-display');
+            if (totalEl) totalEl.innerText = '$ ' + total.toLocaleString();
         }
 
-        const ctx = document.getElementById('pieChart').getContext('2d');
-        new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Shopping', 'Dining', 'Pet'],
-                datasets: [{
-                    data: [60, 30, 10],
-                    backgroundColor: ['#5bc0de', '#f0ad4e', '#d9534f'],
-                    borderWidth: 0
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: { position: 'top' }
+        const ctx = document.getElementById('pieChart');
+        if (ctx) {
+            new Chart(ctx.getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Shopping', 'Dining', 'Pet'],
+                    datasets: [{
+                        data: [60, 30, 10],
+                        backgroundColor: ['#5bc0de', '#f0ad4e', '#d9534f'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'top' }
+                    }
                 }
-            }
-        });
+            });
+        }
 
         if (userStr) {
             fetchExpenses();
