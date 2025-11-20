@@ -22,7 +22,8 @@ public class AuthController {
             User newUser = userService.register(user);
             return ResponseEntity.ok(newUser);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Đăng ký thất bại (Tên đăng nhập có thể đã tồn tại)");
+            e.printStackTrace();
+            return ResponseEntity.badRequest().body("Lỗi: " + e.getMessage());
         }
     }
 
