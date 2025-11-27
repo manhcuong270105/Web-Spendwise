@@ -127,23 +127,25 @@
     </div>
 
     <script>
-        // 1. Kiểm tra User
+        // 1. Kiểm tra User & Hiển thị tên
         const userStr = localStorage.getItem('user');
         if (!userStr) window.location.href = '/dangnhap.html';
         const user = JSON.parse(userStr);
+
         document.getElementById('user-fullname').innerText = user.fullName || user.username;
         document.getElementById('welcome-msg').innerText = `Chào mừng trở lại, ${user.fullName || user.username}!`;
 
         // 2. Đăng xuất
         document.getElementById('logout-btn').addEventListener('click', () => {
-            localStorage.removeItem('user');
-            window.location.href = '/dangnhap.html';
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                localStorage.removeItem('user');
+                window.location.href = '/dangnhap.html';
+            }
         });
 
-        // 3. Tải dữ liệu (CÓ USER ID)
+        // 3. Fetch Data
         async function fetchData() {
             try {
-                // FIX: Thêm user.id vào API
                 const res = await fetch(`/api/expenses?userId=${user.id}`);
                 if (!res.ok) throw new Error("Err");
                 const data = await res.json();

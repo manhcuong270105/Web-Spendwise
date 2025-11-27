@@ -32,7 +32,7 @@
     <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
         <div class="layout-container flex h-full grow flex-row">
             <aside
-                class="sticky top-0 h-screen w-64 flex-shrink-0 bg-white dark:bg-black/20 p-4 border-r border-gray-200 dark:border-gray-800 hidden md:flex flex-col">
+                class="sticky top-0 h-screen w-64 flex-shrink-0 bg-white dark:bg-black/20 p-4 border-r border-gray-200 dark:border-gray-700 hidden md:flex flex-col">
                 <div class="flex h-full flex-col justify-between">
                     <div class="flex flex-col gap-8">
                         <div class="flex items-center gap-2 px-3">
@@ -104,18 +104,14 @@
         if (!userStr) window.location.href = '/dangnhap.html';
         const user = JSON.parse(userStr);
 
-        const nameEl = document.getElementById('user-fullname');
-        if (nameEl) nameEl.innerText = user.fullName || user.username;
+        document.getElementById('user-fullname').innerText = user.fullName || user.username;
 
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                    localStorage.removeItem('user');
-                    window.location.href = '/dangnhap.html';
-                }
-            });
-        }
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                localStorage.removeItem('user');
+                window.location.href = '/dangnhap.html';
+            }
+        });
 
         const categories = [
             { key: 'food', label: 'Ăn uống', icon: 'restaurant' },
@@ -128,7 +124,6 @@
 
         async function loadBudgets() {
             try {
-                // FIX: Gửi userId
                 const res = await fetch(`/api/expenses?userId=${user.id}`);
                 const expenses = await res.json();
 

@@ -156,7 +156,6 @@
 
         async function init() {
             try {
-                // FIX: Gửi userId
                 const res = await fetch(`/api/expenses?userId=${user.id}`);
                 allExpenses = await res.json();
                 renderTable(allExpenses);

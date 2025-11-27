@@ -145,6 +145,9 @@
     </div>
 
     <script>
+        // QUAN TRỌNG: Xóa dữ liệu user cũ ngay khi vào trang đăng nhập
+        localStorage.removeItem('user');
+
         // ĐĂNG NHẬP
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -160,8 +163,8 @@
 
                 if (response.ok) {
                     const user = await response.json();
-                    localStorage.setItem('user', JSON.stringify(user));
-                    window.location.href = '/tongquan.html'; // Chuyển sang file tiếng Việt
+                    localStorage.setItem('user', JSON.stringify(user)); // Lưu user mới
+                    window.location.href = '/tongquan.html';
                 } else {
                     alert("Sai tên đăng nhập hoặc mật khẩu!");
                 }
