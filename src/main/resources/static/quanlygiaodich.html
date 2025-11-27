@@ -166,27 +166,19 @@
     </div>
 
     <script>
-        // XỬ LÝ USER & LOGOUT
         const userStr = localStorage.getItem('user');
         if (!userStr) window.location.href = '/dangnhap.html';
         const user = JSON.parse(userStr);
 
-        // Hiển thị tên user trên sidebar
-        const nameEl = document.getElementById('user-fullname');
-        if (nameEl) nameEl.innerText = user.fullName || user.username;
+        document.getElementById('user-fullname').innerText = user.fullName || user.username;
 
-        // Xử lý nút đăng xuất
-        const logoutBtn = document.getElementById('logout-btn');
-        if (logoutBtn) {
-            logoutBtn.addEventListener('click', () => {
-                if (confirm('Bạn có chắc muốn đăng xuất?')) {
-                    localStorage.removeItem('user');
-                    window.location.href = '/dangnhap.html';
-                }
-            });
-        }
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                localStorage.removeItem('user');
+                window.location.href = '/dangnhap.html';
+            }
+        });
 
-        // LOGIC FORM GIAO DỊCH
         document.getElementById('date').valueAsDate = new Date();
 
         document.getElementById('transactionForm').addEventListener('submit', async (e) => {
@@ -198,7 +190,8 @@
             const date = document.getElementById('date').value;
 
             try {
-                const res = await fetch('/api/expenses', {
+                // FIX: Gửi userId
+                const res = await fetch(`/api/expenses?userId=${user.id}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

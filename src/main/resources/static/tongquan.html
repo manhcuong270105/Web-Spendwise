@@ -129,7 +129,7 @@
     <script>
         // 1. Kiểm tra User
         const userStr = localStorage.getItem('user');
-        if (!userStr) window.location.href = '/dangnhap.html'; // Redirect về file tiếng Việt
+        if (!userStr) window.location.href = '/dangnhap.html';
         const user = JSON.parse(userStr);
         document.getElementById('user-fullname').innerText = user.fullName || user.username;
         document.getElementById('welcome-msg').innerText = `Chào mừng trở lại, ${user.fullName || user.username}!`;
@@ -140,10 +140,11 @@
             window.location.href = '/dangnhap.html';
         });
 
-        // 3. Tải dữ liệu
+        // 3. Tải dữ liệu (CÓ USER ID)
         async function fetchData() {
             try {
-                const res = await fetch('/api/expenses');
+                // FIX: Thêm user.id vào API
+                const res = await fetch(`/api/expenses?userId=${user.id}`);
                 if (!res.ok) throw new Error("Err");
                 const data = await res.json();
                 renderDashboard(data);

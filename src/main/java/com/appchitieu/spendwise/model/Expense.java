@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @Entity
@@ -23,6 +24,12 @@ public class Expense {
     @Column(nullable = false)
     private LocalDate date;
 
-    @Column(nullable = false) 
-    private String type; 
+    @Column(nullable = false)
+    private String type;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private User user;
+    // ---------------------
 }

@@ -31,7 +31,7 @@
 <body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white">
     <div class="flex min-h-screen w-full">
         <aside
-            class="sticky top-0 h-screen w-64 flex-shrink-0 bg-white dark:bg-black/20 p-4 border-r border-gray-200 dark:border-gray-800 hidden md:flex flex-col">
+            class="sticky top-0 h-screen w-64 flex-shrink-0 bg-white dark:bg-black/20 p-4 border-r border-gray-200 dark:border-gray-700 hidden md:flex flex-col">
             <div class="flex h-full flex-col justify-between">
                 <div class="flex flex-col gap-8">
                     <div class="flex items-center gap-2 px-3">
@@ -156,7 +156,8 @@
 
         async function init() {
             try {
-                const res = await fetch('/api/expenses');
+                // FIX: Gửi userId
+                const res = await fetch(`/api/expenses?userId=${user.id}`);
                 allExpenses = await res.json();
                 renderTable(allExpenses);
             } catch (e) {
