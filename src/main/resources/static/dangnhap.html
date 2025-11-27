@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>SpendWise - Đăng nhập & Đăng ký</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#1E4620", "background-light": "#F6F9FC", "background-dark": "#0A2540" },
+                    fontFamily: { "display": ["Manrope", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            font-size: inherit;
+        }
+
+        input[name="auth_type"] {
+            display: none;
+        }
+
+        #login-form-content,
+        #register-form-content {
+            display: none;
+        }
+
+        #login-radio:checked~#login-form-content {
+            display: block;
+        }
+
+        #register-radio:checked~#register-form-content {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="font-display">
+    <div
+        class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="flex flex-1 justify-center items-center p-4 lg:p-8">
+                <div
+                    class="layout-content-container grid grid-cols-1 lg:grid-cols-2 max-w-6xl w-full bg-white dark:bg-[#102216] rounded-xl shadow-lg overflow-hidden">
+                    <div class="relative hidden lg:flex flex-col justify-end p-12 bg-[#f0f4f0] dark:bg-black/20">
+                        <div class="relative z-10">
+                            <h2 class="text-3xl font-bold text-[#1E4620] dark:text-white mb-4">Quản lý tài chính thông
+                                minh.</h2>
+                            <p class="text-base text-gray-600 dark:text-gray-300">SpendWise giúp bạn theo dõi chi tiêu
+                                dễ dàng.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col justify-center p-8 sm:p-12">
+                        <div class="w-full max-w-md mx-auto">
+                            <div class="flex items-center gap-2 mb-8">
+                                <i
+                                    class="material-symbols-outlined text-3xl text-primary dark:text-green-400">account_balance_wallet</i>
+                                <span class="text-2xl font-bold text-primary dark:text-white">SpendWise</span>
+                            </div>
+
+                            <input checked="" id="login-radio" name="auth_type" type="radio" value="Đăng nhập" />
+                            <input id="register-radio" name="auth_type" type="radio" value="Đăng ký" />
+
+                            <div class="flex py-3">
+                                <div
+                                    class="flex h-10 flex-1 items-center justify-center rounded-lg bg-[#e9eee9] dark:bg-[#1f3823] p-1">
+                                    <label
+                                        class="flex cursor-pointer h-full grow items-center justify-center rounded-md has-[:checked]:bg-white has-[:checked]:shadow transition-all"
+                                        for="login-radio">Đăng nhập</label>
+                                    <label
+                                        class="flex cursor-pointer h-full grow items-center justify-center rounded-md has-[:checked]:bg-white has-[:checked]:shadow transition-all"
+                                        for="register-radio">Đăng ký</label>
+                                </div>
+                            </div>
+
+                            <div id="login-form-content">
+                                <h1 class="text-3xl font-bold pb-1">Chào mừng trở lại!</h1>
+                                <form id="loginForm" class="space-y-4 mt-4">
+                                    <label class="flex flex-col w-full">
+                                        <p class="text-sm font-medium pb-2">Tên đăng nhập</p>
+                                        <input id="login-username"
+                                            class="form-input w-full rounded-lg border-gray-300 h-12 px-4"
+                                            placeholder="Nhập username" type="text" required />
+                                    </label>
+                                    <label class="flex flex-col w-full">
+                                        <p class="text-sm font-medium pb-2">Mật khẩu</p>
+                                        <input id="login-password"
+                                            class="form-input w-full rounded-lg border-gray-300 h-12 px-4"
+                                            placeholder="Nhập mật khẩu" type="password" required />
+                                    </label>
+                                    <div class="pt-4">
+                                        <button
+                                            class="w-full rounded-lg bg-primary h-12 text-white font-medium hover:bg-primary/90 transition-colors"
+                                            type="submit">Đăng nhập</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div id="register-form-content">
+                                <h1 class="text-3xl font-bold pb-1">Tạo tài khoản</h1>
+                                <form id="registerForm" class="space-y-4 mt-4">
+                                    <label class="flex flex-col w-full">
+                                        <p class="text-sm font-medium pb-2">Họ và tên</p>
+                                        <input id="reg-fullname"
+                                            class="form-input w-full rounded-lg border-gray-300 h-12 px-4"
+                                            placeholder="Nhập họ tên" type="text" />
+                                    </label>
+                                    <label class="flex flex-col w-full">
+                                        <p class="text-sm font-medium pb-2">Tên đăng nhập</p>
+                                        <input id="reg-username"
+                                            class="form-input w-full rounded-lg border-gray-300 h-12 px-4"
+                                            placeholder="Nhập username" type="text" required />
+                                    </label>
+                                    <label class="flex flex-col w-full">
+                                        <p class="text-sm font-medium pb-2">Mật khẩu</p>
+                                        <input id="reg-password"
+                                            class="form-input w-full rounded-lg border-gray-300 h-12 px-4"
+                                            placeholder="Tạo mật khẩu" type="password" required />
+                                    </label>
+                                    <div class="pt-4">
+                                        <button
+                                            class="w-full rounded-lg bg-primary h-12 text-white font-medium hover:bg-primary/90 transition-colors"
+                                            type="submit">Đăng ký</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ĐĂNG NHẬP
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value;
+            const password = document.getElementById('login-password').value;
+
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username, password })
+                });
+
+                if (response.ok) {
+                    const user = await response.json();
+                    localStorage.setItem('user', JSON.stringify(user));
+                    window.location.href = '/tongquan.html'; // Chuyển sang file tiếng Việt
+                } else {
+                    alert("Sai tên đăng nhập hoặc mật khẩu!");
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Lỗi kết nối server.");
+            }
+        });
+
+        // ĐĂNG KÝ
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const fullName = document.getElementById('reg-fullname').value;
+            const username = document.getElementById('reg-username').value;
+            const password = document.getElementById('reg-password').value;
+
+            try {
+                const response = await fetch('/api/auth/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ fullName, username, password })
+                });
+
+                if (response.ok) {
+                    alert("Đăng ký thành công! Vui lòng đăng nhập.");
+                    document.getElementById('login-radio').click();
+                } else {
+                    const txt = await response.text();
+                    alert("Lỗi: " + txt);
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Lỗi kết nối server.");
+            }
+        });
+    </script>
+</body>
+
+</html>

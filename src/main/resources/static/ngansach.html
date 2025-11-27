@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Thiết lập Ngân sách - SpendWise</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#13ec5b", "background-light": "#f6f8f6", "background-dark": "#102216", "warning": "#FFC107", "danger": "#DC3545" },
+                    fontFamily: { "display": ["Manrope", "sans-serif"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+
+<body class="bg-background-light dark:bg-background-dark font-display">
+    <div class="relative flex h-auto min-h-screen w-full flex-col group/design-root overflow-x-hidden">
+        <div class="layout-container flex h-full grow flex-row">
+            <aside
+                class="sticky top-0 h-screen w-64 flex-shrink-0 bg-white dark:bg-black/20 p-4 border-r border-gray-200 dark:border-gray-800 hidden md:flex flex-col">
+                <div class="flex h-full flex-col justify-between">
+                    <div class="flex flex-col gap-8">
+                        <div class="flex items-center gap-2 px-3">
+                            <span
+                                class="material-symbols-outlined text-green-500 text-3xl">account_balance_wallet</span>
+                            <h1 class="text-xl font-bold text-gray-900 dark:text-white">SpendWise</h1>
+                        </div>
+                        <nav class="flex flex-col gap-1">
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                                href="/tongquan.html">
+                                <span class="material-symbols-outlined">dashboard</span>
+                                <p class="text-sm font-medium">Tổng quan</p>
+                            </a>
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                                href="/quanlygiaodich.html">
+                                <span class="material-symbols-outlined">receipt_long</span>
+                                <p class="text-sm font-medium">Giao dịch</p>
+                            </a>
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                                href="/thongkebaocao.html">
+                                <span class="material-symbols-outlined">bar_chart</span>
+                                <p class="text-sm font-medium">Báo cáo</p>
+                            </a>
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-gray-900 dark:text-white"
+                                href="/ngansach.html">
+                                <span class="material-symbols-outlined fill">account_balance</span>
+                                <p class="text-sm font-medium">Ngân sách</p>
+                            </a>
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                                href="/timkiem.html">
+                                <span class="material-symbols-outlined">search</span>
+                                <p class="text-sm font-medium">Tìm kiếm</p>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-2 border-t border-gray-200 cursor-pointer" id="logout-btn">
+                        <div
+                            class="bg-center bg-no-repeat bg-cover rounded-full size-10 bg-gray-300 flex items-center justify-center">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-gray-900 dark:text-white text-sm font-semibold" id="user-fullname">User</h1>
+                            <p class="text-xs text-gray-500">Đăng xuất</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="flex-1 p-8">
+                <div class="layout-content-container flex flex-col max-w-4xl mx-auto flex-1">
+                    <header class="flex flex-wrap justify-between gap-4 items-center mb-8">
+                        <div class="flex min-w-72 flex-col gap-2">
+                            <p class="text-[#0d1b12] dark:text-white text-4xl font-black">Thiết lập Ngân sách</p>
+                            <p class="text-[#4c9a66] dark:text-gray-400 text-base">Quản lý hạn mức chi tiêu cho từng
+                                danh mục.</p>
+                        </div>
+                    </header>
+
+                    <div class="space-y-4" id="budget-container">
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // 1. Sidebar Logic
+        const userStr = localStorage.getItem('user');
+        if (!userStr) window.location.href = '/dangnhap.html';
+        const user = JSON.parse(userStr);
+
+        const nameEl = document.getElementById('user-fullname');
+        if (nameEl) nameEl.innerText = user.fullName || user.username;
+
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                    localStorage.removeItem('user');
+                    window.location.href = '/dangnhap.html';
+                }
+            });
+        }
+
+        // 2. Budget Logic
+        const categories = [
+            { key: 'food', label: 'Ăn uống', icon: 'restaurant' },
+            { key: 'shopping', label: 'Mua sắm', icon: 'shopping_bag' },
+            { key: 'transport', label: 'Di chuyển', icon: 'directions_car' },
+            { key: 'entertainment', label: 'Giải trí', icon: 'movie' },
+            { key: 'bills', label: 'Hóa đơn', icon: 'receipt' },
+            { key: 'health', label: 'Sức khỏe', icon: 'medical_services' }
+        ];
+
+        async function loadBudgets() {
+            try {
+                const res = await fetch('/api/expenses');
+                const expenses = await res.json();
+
+                const spentMap = {};
+                categories.forEach(c => spentMap[c.key] = 0);
+
+                expenses.forEach(ex => {
+                    if (ex.type === 'EXPENSE' || ex.type === 'Chi tiêu') {
+                        const desc = ex.description.toLowerCase();
+                        categories.forEach(cat => {
+                            if (desc.includes(cat.label.toLowerCase()) || desc.includes(cat.key)) {
+                                spentMap[cat.key] += ex.amount;
+                            }
+                        });
+                    }
+                });
+
+                const savedBudgets = JSON.parse(localStorage.getItem('budgets')) || {};
+                const container = document.getElementById('budget-container');
+                container.innerHTML = '';
+
+                categories.forEach(cat => {
+                    const spent = spentMap[cat.key];
+                    const limit = savedBudgets[cat.key] || 0;
+                    let percent = 0;
+                    if (limit > 0) percent = Math.min((spent / limit) * 100, 100);
+
+                    let progressColor = 'bg-primary';
+                    if (percent > 80) progressColor = 'bg-warning';
+                    if (percent >= 100) progressColor = 'bg-danger';
+
+                    const html = `
+                <div class="grid grid-cols-1 md:grid-cols-3 items-center gap-4 p-4 bg-white dark:bg-[#1A2C21] rounded-xl shadow-sm border border-gray-100">
+                    <div class="flex items-center gap-4 col-span-1">
+                        <div class="flex items-center justify-center size-10 rounded-lg bg-gray-100 dark:bg-gray-700">
+                            <span class="material-symbols-outlined text-gray-600 dark:text-gray-200">${cat.icon}</span>
+                        </div>
+                        <div>
+                            <p class="text-[#0d1b12] dark:text-white font-semibold">${cat.label}</p>
+                            <p class="text-sm text-gray-500">Đã chi: ${spent.toLocaleString()} đ</p>
+                        </div>
+                    </div>
+                    <div class="col-span-1 md:col-span-2 flex items-center gap-4">
+                        <div class="w-full rounded-full bg-gray-200 dark:bg-gray-700 h-2">
+                            <div class="h-2 rounded-full ${progressColor}" style="width: ${percent}%;"></div>
+                        </div>
+                        <div class="relative w-40">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400">đ</span>
+                            <input onchange="saveBudget('${cat.key}', this.value)" 
+                                   class="w-full text-right bg-transparent border border-gray-300 dark:border-gray-600 rounded-md py-1.5 pl-6 pr-3 text-[#0d1b12] dark:text-white font-medium focus:ring-primary" 
+                                   type="number" placeholder="Hạn mức" value="${limit > 0 ? limit : ''}"/>
+                        </div>
+                    </div>
+                </div>`;
+                    container.innerHTML += html;
+                });
+
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function saveBudget(key, value) {
+            const savedBudgets = JSON.parse(localStorage.getItem('budgets')) || {};
+            savedBudgets[key] = parseFloat(value);
+            localStorage.setItem('budgets', JSON.stringify(savedBudgets));
+            loadBudgets();
+        }
+
+        loadBudgets();
+    </script>
+</body>
+
+</html>

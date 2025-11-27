@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html class="light" lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Báo cáo & Thống kê - SpendWise</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+        rel="stylesheet" />
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: { "primary": "#13ec5b", "background-light": "#f6f8f6", "background-dark": "#102216" },
+                    fontFamily: { "display": ["Manrope"] },
+                },
+            },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+        }
+
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1
+        }
+    </style>
+</head>
+
+<body class="font-display bg-background-light dark:bg-background-dark">
+    <div class="relative flex h-auto min-h-screen w-full flex-col">
+        <div class="flex h-full min-h-screen">
+            <aside
+                class="sticky top-0 h-screen w-64 flex-shrink-0 bg-white dark:bg-black/20 p-4 border-r border-gray-200 dark:border-gray-800 hidden md:flex flex-col">
+                <div class="flex h-full flex-col justify-between">
+                    <div class="flex flex-col gap-8">
+                        <div class="flex items-center gap-2 px-3">
+                            <span
+                                class="material-symbols-outlined text-green-500 text-3xl">account_balance_wallet</span>
+                            <h1 class="text-xl font-bold text-gray-900 dark:text-white">SpendWise</h1>
+                        </div>
+                        <nav class="flex flex-col gap-1">
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                                href="/tongquan.html">
+                                <span class="material-symbols-outlined">dashboard</span>
+                                <p class="text-sm font-medium">Tổng quan</p>
+                            </a>
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                                href="/quanlygiaodich.html">
+                                <span class="material-symbols-outlined">receipt_long</span>
+                                <p class="text-sm font-medium">Giao dịch</p>
+                            </a>
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-primary/20 text-gray-900 dark:text-white"
+                                href="/thongkebaocao.html">
+                                <span class="material-symbols-outlined fill">bar_chart</span>
+                                <p class="text-sm font-medium">Báo cáo</p>
+                            </a>
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                                href="/ngansach.html">
+                                <span class="material-symbols-outlined">account_balance</span>
+                                <p class="text-sm font-medium">Ngân sách</p>
+                            </a>
+                            <a class="flex items-center gap-3 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-100"
+                                href="/timkiem.html">
+                                <span class="material-symbols-outlined">search</span>
+                                <p class="text-sm font-medium">Tìm kiếm</p>
+                            </a>
+                        </nav>
+                    </div>
+
+                    <div class="flex items-center gap-3 p-2 border-t border-gray-200 cursor-pointer" id="logout-btn">
+                        <div
+                            class="bg-center bg-no-repeat bg-cover rounded-full size-10 bg-gray-300 flex items-center justify-center">
+                            <span class="material-symbols-outlined">person</span>
+                        </div>
+                        <div class="flex flex-col">
+                            <h1 class="text-gray-900 dark:text-white text-sm font-semibold" id="user-fullname">User</h1>
+                            <p class="text-xs text-gray-500">Đăng xuất</p>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <main class="flex-1 overflow-y-auto">
+                <div class="p-6 md:p-8 lg:p-10">
+                    <header class="flex flex-wrap items-center justify-between gap-4 mb-6">
+                        <div class="flex flex-col gap-1">
+                            <h1
+                                class="text-slate-900 dark:text-white text-3xl md:text-4xl font-black leading-tight tracking-[-0.033em]">
+                                Báo cáo & Thống kê</h1>
+                            <p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-normal">Phân tích
+                                chi tiết dòng tiền của bạn.</p>
+                        </div>
+                    </header>
+
+                    <section class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 mb-6">
+                        <div
+                            class="flex flex-col gap-2 rounded-xl p-6 border border-gray-200 dark:border-white/10 bg-white dark:bg-background-dark">
+                            <p class="text-slate-600 dark:text-slate-400 text-base font-medium leading-normal">Tổng Thu
+                                Nhập</p>
+                            <p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight"
+                                id="rpt-income">0đ</p>
+                        </div>
+                        <div
+                            class="flex flex-col gap-2 rounded-xl p-6 border border-gray-200 dark:border-white/10 bg-white dark:bg-background-dark">
+                            <p class="text-slate-600 dark:text-slate-400 text-base font-medium leading-normal">Tổng Chi
+                                Tiêu</p>
+                            <p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight"
+                                id="rpt-expense">0đ</p>
+                        </div>
+                        <div
+                            class="flex flex-col gap-2 rounded-xl p-6 border border-gray-200 dark:border-white/10 bg-white dark:bg-background-dark">
+                            <p class="text-slate-600 dark:text-slate-400 text-base font-medium leading-normal">Số Dư</p>
+                            <p class="text-slate-900 dark:text-white tracking-tight text-3xl font-bold leading-tight"
+                                id="rpt-balance">0đ</p>
+                        </div>
+                    </section>
+
+                    <div class="p-4 rounded-xl bg-blue-50 dark:bg-blue-900/20 text-blue-800 dark:text-blue-200">
+                        <p>Các biểu đồ chi tiết sẽ được cập nhật trong phiên bản tiếp theo.</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // 1. Kiểm tra đăng nhập & Sidebar
+        const userStr = localStorage.getItem('user');
+        if (!userStr) window.location.href = '/dangnhap.html';
+        const user = JSON.parse(userStr);
+
+        // Set tên user Sidebar
+        const nameEl = document.getElementById('user-fullname');
+        if (nameEl) nameEl.innerText = user.fullName || user.username;
+
+        // Handle logout
+        const logoutBtn = document.getElementById('logout-btn');
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', () => {
+                if (confirm('Bạn có chắc muốn đăng xuất?')) {
+                    localStorage.removeItem('user');
+                    window.location.href = '/dangnhap.html';
+                }
+            });
+        }
+
+        // 2. Tải dữ liệu báo cáo
+        async function fetchReport() {
+            try {
+                const res = await fetch('/api/expenses');
+                const data = await res.json();
+
+                let totalIncome = 0;
+                let totalExpense = 0;
+
+                data.forEach(item => {
+                    if (item.type === 'INCOME' || item.type === 'Thu nhập') totalIncome += item.amount;
+                    else totalExpense += item.amount;
+                });
+
+                document.getElementById('rpt-income').innerText = totalIncome.toLocaleString() + ' ₫';
+                document.getElementById('rpt-expense').innerText = totalExpense.toLocaleString() + ' ₫';
+                document.getElementById('rpt-balance').innerText = (totalIncome - totalExpense).toLocaleString() + ' ₫';
+
+            } catch (e) {
+                console.error(e);
+            }
+        }
+        fetchReport();
+    </script>
+</body>
+
+</html>
